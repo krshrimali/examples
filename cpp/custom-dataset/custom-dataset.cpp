@@ -20,7 +20,7 @@ struct Options {
 
 static Options options;
 
-using Data = std::vector<std::pair<std::string, long>>;
+using Data = std::vector<std::pair<std::string, int64_t>>;
 
 class CustomDataset : public torch::data::datasets::Dataset<CustomDataset> {
   using Example = torch::data::Example<>;
@@ -70,7 +70,7 @@ std::pair<Data, Data> readInfo() {
   std::ifstream stream(options.infoFilePath);
   assert(stream.is_open());
 
-  long label;
+  int64_t label;
   std::string path, type;
 
   while (true) {
@@ -119,7 +119,7 @@ struct NetworkImpl : torch::nn::SequentialImpl {
     push_back(Linear(4096, 4096));
     push_back(Functional(torch::relu));
     push_back(Linear(4096, 102));
-    push_back(Functional(torch::log_softmax, 1, torch::nullopt));
+    push_back(Functional(torch::nn::functional::detail::log_softmax, 1, torch::nullopt));
   }
 };
 TORCH_MODULE(Network);
