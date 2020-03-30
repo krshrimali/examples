@@ -119,7 +119,7 @@ struct NetworkImpl : torch::nn::SequentialImpl {
     push_back(Linear(4096, 4096));
     push_back(Functional(torch::relu));
     push_back(Linear(4096, 102));
-    push_back(Functional(torch::nn::functional::detail::log_softmax, 1));
+    push_back(Functional(torch::nn::functional::log_softmax, 1));
   }
 };
 TORCH_MODULE(Network);
